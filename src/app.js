@@ -10,9 +10,13 @@ module.exports = () => {
   app.use('/css', express.static(path.join(__dirname, '..', 'node_modules', 'bootstrap', 'dist', 'css')));
   app.use('/js', express.static(path.join(__dirname, '..', 'node_modules', 'bootstrap', 'dist', 'js')));
   app.use('/js', express.static(path.join(__dirname, '..', 'node_modules', 'jquery', 'dist')));
+  app.use('/js', express.static(path.join(__dirname, '..', 'node_modules', 'popper.js', 'dist')));
+
+  app.set('views', path.join(__dirname, 'views'));
+  app.set('view engine', 'ejs');
 
   app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'views', 'index.html'));
+    res.render('index', {});
   });
   return app;
 };
