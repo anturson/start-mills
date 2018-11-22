@@ -2,6 +2,8 @@ const express = require('express');
 const morgan = require('morgan');
 const path = require('path');
 
+const objectRouter = require('./objects-router');
+
 module.exports = () => {
   const app = express();
 
@@ -15,6 +17,7 @@ module.exports = () => {
   app.set('views', path.join(__dirname, 'views'));
   app.set('view engine', 'ejs');
 
+  app.use('/api/objects', objectRouter());
   app.get('/', (req, res) => {
     res.render('index', {});
   });
