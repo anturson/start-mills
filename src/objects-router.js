@@ -1,34 +1,26 @@
 const express = require('express');
+const debug = require('debug');
 
-const objects = {
-  form: [
-    {
-      _id: 1,
-      name: 'Form 1',
-    }, {
-      _id: 2,
-      name: 'Form 2',
-    },
-  ],
-  job: [
-    {
-      _id: 1,
-      name: 'Job 1',
-    },
-    {
-      _id: 1,
-      name: 'Job 1',
-    },
-  ],
+const client = require('./db/pg-client');
+
+const log = debug('app');
+
+const getList = async (req, res) => {
+  try {
+    const result = await client.query('SELECT table_schema,table_name FROM information_schema.tables;');
+    res.json(result.rows);
+  } catch (err) {
+    log(err);
+  } finally {
+    client.end();
+  }
 };
 
 module.exports = () => {
   const router = express.Router();
 
-  router.route('/:entityName')
-    .get((req, res) => {
-      res.json(objects[req.params.entityName]);
-    });
+  router.route('/:entityId')
+    .get(getList);
 
   return router;
 };
